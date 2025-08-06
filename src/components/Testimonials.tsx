@@ -1,10 +1,17 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import testimonialDog1 from "@/assets/testimonial-dog1.jpg";
 import testimonialCat1 from "@/assets/testimonial-cat1.jpg";
 import testimonialDog2 from "@/assets/testimonial-dog2.jpg";
 
 const Testimonials = () => {
+  const { elementRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0.3,
+    triggerOnce: true
+  });
+
   const testimonials = [
     {
       name: "Bella the Pomeranian",
@@ -89,21 +96,52 @@ const Testimonials = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div 
+          ref={elementRef}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+        >
           <div className="bg-card/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-            <div className="text-3xl font-bold text-primary mb-2">500+</div>
+            <div className="text-3xl font-bold text-primary mb-2">
+              <AnimatedCounter 
+                end={500} 
+                suffix="+" 
+                trigger={isIntersecting}
+                duration={2500}
+              />
+            </div>
             <div className="text-muted-foreground">Happy Pets</div>
           </div>
           <div className="bg-card/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-            <div className="text-3xl font-bold text-primary mb-2">10+</div>
+            <div className="text-3xl font-bold text-primary mb-2">
+              <AnimatedCounter 
+                end={10} 
+                suffix="+" 
+                trigger={isIntersecting}
+                duration={2000}
+              />
+            </div>
             <div className="text-muted-foreground">Years Experience</div>
           </div>
           <div className="bg-card/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-            <div className="text-3xl font-bold text-primary mb-2">100%</div>
+            <div className="text-3xl font-bold text-primary mb-2">
+              <AnimatedCounter 
+                end={100} 
+                suffix="%" 
+                trigger={isIntersecting}
+                duration={2200}
+              />
+            </div>
             <div className="text-muted-foreground">Love & Care</div>
           </div>
           <div className="bg-card/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-            <div className="text-3xl font-bold text-primary mb-2">⭐ 5.0</div>
+            <div className="text-3xl font-bold text-primary mb-2">
+              ⭐ <AnimatedCounter 
+                end={5.0} 
+                trigger={isIntersecting}
+                duration={1800}
+                decimals={1}
+              />
+            </div>
             <div className="text-muted-foreground">Average Rating</div>
           </div>
         </div>
