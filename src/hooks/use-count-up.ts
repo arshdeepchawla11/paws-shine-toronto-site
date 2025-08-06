@@ -10,11 +10,12 @@ interface UseCountUpOptions {
 export const useCountUp = ({ end, duration = 2000, start = 0, decimals = 0 }: UseCountUpOptions) => {
   const [count, setCount] = useState(start);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const frameRef = useRef<number>();
   const startTimeRef = useRef<number>();
 
   const startAnimation = () => {
-    if (isAnimating) return;
+    if (isAnimating || hasAnimated) return;
     
     setIsAnimating(true);
     startTimeRef.current = undefined;
@@ -37,6 +38,7 @@ export const useCountUp = ({ end, duration = 2000, start = 0, decimals = 0 }: Us
         frameRef.current = requestAnimationFrame(animate);
       } else {
         setIsAnimating(false);
+        setHasAnimated(true);
       }
     };
     
@@ -49,6 +51,7 @@ export const useCountUp = ({ end, duration = 2000, start = 0, decimals = 0 }: Us
     }
     setCount(start);
     setIsAnimating(false);
+    setHasAnimated(false);
   };
 
   useEffect(() => {
@@ -59,5 +62,5 @@ export const useCountUp = ({ end, duration = 2000, start = 0, decimals = 0 }: Us
     };
   }, []);
 
-  return { count, startAnimation, reset, isAnimating };
+  return { count, startAnimation, reset, isAnimating, hasAnimated };
 };

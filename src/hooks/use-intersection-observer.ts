@@ -20,13 +20,9 @@ export const useIntersectionObserver = (options: UseIntersectionObserverOptions 
       ([entry]) => {
         const isCurrentlyIntersecting = entry.isIntersecting;
         
-        if (isCurrentlyIntersecting && (!triggerOnce || !hasTriggered)) {
+        if (isCurrentlyIntersecting && !hasTriggered) {
           setIsIntersecting(true);
-          if (triggerOnce) {
-            setHasTriggered(true);
-          }
-        } else if (!triggerOnce) {
-          setIsIntersecting(isCurrentlyIntersecting);
+          setHasTriggered(true);
         }
       },
       { threshold, rootMargin }
@@ -37,7 +33,7 @@ export const useIntersectionObserver = (options: UseIntersectionObserverOptions 
     return () => {
       observer.unobserve(element);
     };
-  }, [threshold, rootMargin, triggerOnce, hasTriggered]);
+  }, [threshold, rootMargin, hasTriggered]);
 
   return { elementRef, isIntersecting };
 };
